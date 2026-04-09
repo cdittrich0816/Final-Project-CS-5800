@@ -1,0 +1,15 @@
+project/
+│
+├── data/
+│   └── dataset.csv
+│
+├── knn/
+│   ├── knn.py           # core algorithm
+│   ├── distance.py      # distance function
+│
+├── visualization/
+│   └── plot.py          # visualization
+│
+├── main.py              # entrance of program
+├── README.md
+└── report.pdf/ slides
