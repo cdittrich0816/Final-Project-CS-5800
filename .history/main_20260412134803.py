@@ -43,12 +43,9 @@ def main():
 
     # 5. Store the predicted label in a variable.
     predicted_label = vote_for_label(top_k_neighbors)
-
-    # 6. Print the predicted label.
     print(f"Label: {predicted_label}")  
 
-    # 7. Show the visualization.
-    plot_knn(points_list, target_point, top_k_neighbors, predicted_label)
+    #. 
 
 
 if __name__ == "__main__":

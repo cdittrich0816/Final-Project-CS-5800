@@ -41,14 +41,9 @@ def main():
         dist = item['distance']
         print(f"Top {i + 1}: point({point['x']}, {point['y']}) | label: {point['label']} | distance: {dist:.4f}")
 
-    # 5. Store the predicted label in a variable.
+    # 5. vote_for_label
     predicted_label = vote_for_label(top_k_neighbors)
-
-    # 6. Print the predicted label.
-    print(f"Label: {predicted_label}")  
-
-    # 7. Show the visualization.
-    plot_knn(points_list, target_point, top_k_neighbors, predicted_label)
+print(f"Label: {predicted_label}")
 
 
 if __name__ == "__main__":

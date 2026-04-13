@@ -47,8 +47,7 @@ def main():
     # 6. Print the predicted label.
     print(f"Label: {predicted_label}")  
 
-    # 7. Show the visualization.
-    plot_knn(points_list, target_point, top_k_neighbors, predicted_label)
+    #. 
 
 
 if __name__ == "__main__":
