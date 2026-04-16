@@ -18,13 +18,13 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         "C": "orange"
     }
 
-    # This create a new figure.
+    # THis create a new figure.
     plt.figure(figsize=(8, 6))
 
-    # This keeps track of which labels have already been added to the legend.
+    # We keep track of which labels have already been added to the legend.
     used_labels = set()
 
-    # Plot all the dataset points.
+    # We plot all the dataset points.
     for point in points_list:
         x = point["x"]
         y = point["y"]
@@ -38,8 +38,8 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         else:
             plt.scatter(x, y, color=color, s=60)
 
-    # This highlights the top-k neighbors with a black outline
-    # and draws a dashed line from the target point to each one.
+    # We highlight the top-k neighbors with a black outline
+    # and draw a dashed line from the target point to each one.
     for neighbor in top_k_neighbors:
         point = neighbor["point"]
         x = point["x"]
@@ -83,5 +83,5 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     plt.legend()
     plt.grid(True)
 
-    # Finally, this displays the plot.
+    # Finally, we display the plot.
     plt.show()

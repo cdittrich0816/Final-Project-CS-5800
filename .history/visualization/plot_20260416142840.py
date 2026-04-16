@@ -18,10 +18,10 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         "C": "orange"
     }
 
-    # This create a new figure.
+    # We create a new figure.
     plt.figure(figsize=(8, 6))
 
-    # This keeps track of which labels have already been added to the legend.
+    # We keep track of which labels have already been added to the legend
     used_labels = set()
 
     # Plot all the dataset points.
@@ -29,17 +29,17 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         x = point["x"]
         y = point["y"]
         label = point["label"]
-        color = label_colors.get(label, "gray")  # fallback color if the label is unknown
+        color = label_colors.get(label, "gray")  # fallback color if label is unknown
 
-        # This ensures that each class label is only shown once in the legend.
+        # Only show each class label once in the legend.
         if label not in used_labels:
             plt.scatter(x, y, color=color, s=60, label=f"Class {label}")
             used_labels.add(label)
         else:
             plt.scatter(x, y, color=color, s=60)
 
-    # This highlights the top-k neighbors with a black outline
-    # and draws a dashed line from the target point to each one.
+    # We highlight the top-k neighbors with a black outline
+    # and draw a dashed line from the target point to each one.
     for neighbor in top_k_neighbors:
         point = neighbor["point"]
         x = point["x"]
@@ -63,7 +63,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
             linewidths=2
         )
 
-    # We plot the target point as a large red X.
+    # Plot the target point as a large red X.
     plt.scatter(
         target_point[0],
         target_point[1],
@@ -79,9 +79,9 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     plt.ylabel("y")
     plt.title(f"KNN Classification Result (Predicted Label: {predicted_label})")
 
-    # We show the legend and grid on the plot.
+    # We show legend and grid on the plot.
     plt.legend()
     plt.grid(True)
 
-    # Finally, this displays the plot.
+    # Finally, we display the plot.
     plt.show()

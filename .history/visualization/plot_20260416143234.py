@@ -81,7 +81,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
 
     # We show the legend and grid on the plot.
     plt.legend()
-    plt.grid(True)
+    plt.grid(True)the
 
     # Finally, this displays the plot.
     plt.show()

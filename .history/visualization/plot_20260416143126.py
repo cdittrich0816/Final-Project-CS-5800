@@ -39,7 +39,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
             plt.scatter(x, y, color=color, s=60)
 
     # This highlights the top-k neighbors with a black outline
-    # and draws a dashed line from the target point to each one.
+    # and draw a dashed line from the target point to each one.
     for neighbor in top_k_neighbors:
         point = neighbor["point"]
         x = point["x"]
@@ -83,5 +83,5 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     plt.legend()
     plt.grid(True)
 
-    # Finally, this displays the plot.
+    # Finally, we display the plot.
     plt.show()
