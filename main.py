@@ -1,8 +1,10 @@
 import csv
 import os
 
+from data.prepare_data import prepare_iris_csv
 from visualization.plot import plot_knn
 from knn.knn import cal_topk_neighbors, vote_for_label
+import numpy as np
 
 def parse_data(filename):
     points_list = []
@@ -23,6 +25,9 @@ def parse_data(filename):
     return points_list
 
 def main():
+    # 0. prepare Iris data from UCI repository.
+    prepare_iris_csv()
+
     # 1. parse the training data file.
     filename = "data/train_dataset.csv"
     points_list = parse_data(filename)
@@ -32,6 +37,24 @@ def main():
     target_points_list = parse_data(filename)
     right_predictions = 0
     k = 6  # k
+
+    # # 3. generate decision boundary
+    # step = 0.1
+    # x_range = np.arange(0, 10.1, step)
+    # y_range = np.arange(0, 10.1, step)
+    #
+    # with open("./data/decision_boundary.csv", mode="w", newline="", encoding="utf-8") as file:
+    #     writer = csv.writer(file)
+    #     writer.writerow(["x", "y", "label"])
+    #
+    #     for y in y_range:
+    #         for x in x_range:
+    #             target_xy = (round(float(x), 1), round(float(y), 1))
+    #
+    #             top_k_neighbors = cal_topk_neighbors(points_list, target_xy, k)
+    #             predicted_label = vote_for_label(top_k_neighbors)
+    #
+    #             writer.writerow([target_xy[0], target_xy[1], predicted_label])
 
     for idx, target_point in enumerate(target_points_list):
         # 3. extract x and y for target_point
