@@ -21,7 +21,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     # We create a new figure.
     plt.figure(figsize=(8, 6))
 
-    # We keep track of which labels have already been added to the legend,
+    # We eep track of which labels have already been added to the legend,
     # so the legend does not repeat the same label over and over.
     used_labels = set()
 

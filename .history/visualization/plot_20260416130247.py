@@ -21,8 +21,8 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     # We create a new figure.
     plt.figure(figsize=(8, 6))
 
-    # We keep track of which labels have already been added to the legend,
-    # so the legend does not repeat the same label over and over.
+    # Keep track of which labels have already been added to the legend,
+    # so the legend does not repeat the same label many times.
     used_labels = set()
 
     # Plot all the dataset points.
@@ -39,7 +39,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         else:
             plt.scatter(x, y, color=color, s=60)
 
-    # We highlight the top-k neighbors with a black outline
+    # Highlight the top-k neighbors with a black outline
     # and draw a dashed line from the target point to each one.
     for neighbor in top_k_neighbors:
         point = neighbor["point"]
@@ -54,7 +54,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
             linewidth=1
         )
 
-        # Draw the neighbor again on top with a larger marker and black outline.
+        # Draw the neighbor again on top with a larger marker and black edge.
         plt.scatter(
             x,
             y,
@@ -75,14 +75,14 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         label="Target Point"
     )
 
-    # We add the labels and title.
+    # Add labels and title.
     plt.xlabel("x")
     plt.ylabel("y")
     plt.title(f"KNN Classification Result (Predicted Label: {predicted_label})")
 
-    # We show legend and grid on the plot.
+    # Show legend and grid on the plot.
     plt.legend()
     plt.grid(True)
 
-    # Finally, we display the plot.
+    # Display the plot.
     plt.show()
