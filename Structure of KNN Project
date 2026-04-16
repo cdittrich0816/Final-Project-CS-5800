@@ -2,6 +2,9 @@ project/
 │
 ├── data/
 │   └── dataset.csv
+│   ├── prepare.py           # split train data and test data from UCI repository
+│   ├── test_dataset.csv     # test dataset
+│   ├── train_dataset.csv          # train dataset
 │
 ├── knn/
 │   ├── knn.py           # core algorithm
