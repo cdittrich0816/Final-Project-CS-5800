@@ -6,7 +6,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     This function exists to visualize the KNN classification result.
 
     points_list: all classified points from the dataset
-    target_point: the point we want to classify, e.g. (8.5, 5.5)
+    target_point: the point we want to classify
     top_k_neighbors: the k nearest neighbors returned by the cal_topk_neighbors() function
     predicted_label: the final label returned by the vote_for_label() function
     """
