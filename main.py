@@ -15,18 +15,18 @@ def parse_data(filename):
 
     with open(filename, mode='r', encoding='utf-8') as file:
         # read the first row of the data file as header(keys of our dictionary).
-        csv_reader = csv.DictReader(file)
+        csv_reader = csv.reader(file)
         for row in csv_reader:
             points_list.append({
-                'x': float(row['x']),  # to make the distance calculation more precise, transform it to float.
-                'y': float(row['y']),
-                'label': row['label']
+                'x': float(row[0]),  # to make the distance calculation more precise, transform it to float.
+                'y': float(row[1]),
+                'label': row[2]
             })
     return points_list
 
 def main():
     # 0. prepare Iris data from UCI repository.
-    prepare_iris_csv()
+    # prepare_iris_csv()
 
     # 1. parse the training data file.
     filename = "data/train_dataset.csv"
@@ -80,9 +80,14 @@ def main():
         # 7. Print the predicted label.
         print(f"Predicted_Label: {predicted_label}, Original_Label: {target_label}")
 
-        # 8. Show the visualization.
-        # plot_knn(points_list, target_xy, top_k_neighbors, predicted_label)
-
     print(f"\nprediction correct rate: {float(right_predictions / 30)}")
+
+    target_xy = (5.4, 1.9)
+
+    top_k_neighbors = cal_topk_neighbors(points_list, target_xy, k)
+    predicted_label = vote_for_label(top_k_neighbors)
+
+    plot_knn(points_list, target_xy, top_k_neighbors, predicted_label, k)
+
 if __name__ == "__main__":
     main()
