@@ -19,12 +19,15 @@ def parse_data(filename):
         csv_reader = csv.reader(file)
         # Move to real data.
         next(csv_reader)
+        i= 0
         for row in csv_reader:
+            i+= 1
             points_list.append({
                 'x': float(row[0]),  # to make the distance calculation more precise, transform it to float.
                 'y': float(row[1]),
                 'label': row[2]
             })
+        print("rows parsed := ", i)
     return points_list
 
 def main():
