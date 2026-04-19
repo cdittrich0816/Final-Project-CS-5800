@@ -14,12 +14,11 @@ def parse_data(filename):
         return points_list
 
     with open(filename, mode='r', encoding='utf-8') as file:
-        # Since the dataset has a header 'x', 'y', 'label' as the first row, we manually remove it for training dataset and testing dataset
-        # It will work to uncomment the code in the 22nd line if the first row is 'x', 'y', 'label'.
-        
+        # Since the dataset has a header 'x', 'y', 'label' as the first row, we need to skip the 1st row.
         # Get a csv object from file
         csv_reader = csv.reader(file)
-        # next(csv_reader)
+        # Move to real data.
+        next(csv_reader)
         for row in csv_reader:
             points_list.append({
                 'x': float(row[0]),  # to make the distance calculation more precise, transform it to float.
@@ -30,7 +29,7 @@ def parse_data(filename):
 
 def main():
     # 0. prepare Iris data from UCI repository.
-    # prepare_iris_csv()
+    prepare_iris_csv()
 
     # 1. parse the training data file.
     filename = "data/train_dataset.csv"
@@ -53,7 +52,7 @@ def main():
     x_range = np.arange(x_min, x_max, step)
     y_range = np.arange(y_min, y_max, step)
 
-    with open("./data/decision_boundary.csv", mode="w", newline="", encoding="utf-8") as file:
+    with open("data/decision_boundary.csv", mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["x", "y", "label"])
 
@@ -90,7 +89,7 @@ def main():
         # 7. Print the predicted label.
         print(f"Predicted_Label: {predicted_label}, Original_Label: {target_label}")
 
-    print(f"\nprediction correct rate: {float(right_predictions / 30)}")
+    print(f"\nprediction correct rate: {float(right_predictions / 30) * 100:.2f}%")
 
     target_xy = (5.4, 1.9)
 
