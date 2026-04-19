@@ -14,8 +14,12 @@ def parse_data(filename):
         return points_list
 
     with open(filename, mode='r', encoding='utf-8') as file:
-        # read the first row of the data file as header(keys of our dictionary).
+        # Since the dataset has a header 'x', 'y', 'label' as the first row, we manually remove it for training dataset and testing dataset
+        # It will work to uncomment the code in the 22nd line if the first row is 'x', 'y', 'label'.
+        
+        # Get a csv object from file
         csv_reader = csv.reader(file)
+        # next(csv_reader)
         for row in csv_reader:
             points_list.append({
                 'x': float(row[0]),  # to make the distance calculation more precise, transform it to float.
