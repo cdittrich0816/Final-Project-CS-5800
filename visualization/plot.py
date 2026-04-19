@@ -1,7 +1,5 @@
+import csv
 import matplotlib.pyplot as plt
-import numpy as np
-
-from knn.knn import cal_topk_neighbors, vote_for_label
 
 
 def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
@@ -22,40 +20,43 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
         "Iris-virginica": "orange"
     }
 
-    # Numeric mapping for the boundary regions
+    # Numeric mapping for contour plotting
     label_to_num = {
         "Iris-setosa": 0,
         "Iris-versicolor": 1,
         "Iris-virginica": 2
     }
 
-    # Extract x and y values from the dataset
-    x_values = [point["x"] for point in points_list]
-    y_values = [point["y"] for point in points_list]
+    # Read the precalculated decision boundary data from the CSV file
+    boundary_rows = []
 
-    # Add a small margin around the plotted area
-    x_min, x_max = min(x_values) - 0.5, max(x_values) + 0.5
-    y_min, y_max = min(y_values) - 0.5, max(y_values) + 0.5
+    with open("./data/decision_boundary.csv", mode="r", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            boundary_rows.append({
+                "x": float(row["x"]),
+                "y": float(row["y"]),
+                "z": label_to_num[row["label"]]
+            })
 
-    # Create a mesh grid of points across the plot
-    step_size = 0.05
-    xx, yy = np.meshgrid(
-        np.arange(x_min, x_max, step_size),
-        np.arange(y_min, y_max, step_size)
-    )
+    # Get sorted unique x and y values from the CSV file
+    x_unique = sorted({row["x"] for row in boundary_rows})
+    y_unique = sorted({row["y"] for row in boundary_rows})
 
-    # Predict a label for every point in the grid
-    z = []
-    for grid_x, grid_y in zip(xx.ravel(), yy.ravel()):
-        neighbors = cal_topk_neighbors(points_list, (grid_x, grid_y), k)
-        label = vote_for_label(neighbors)
-        z.append(label_to_num[label])
+    # Build a lookup table from (x, y) -> class number
+    z_lookup = {(row["x"], row["y"]): row["z"] for row in boundary_rows}
 
-    z = np.array(z).reshape(xx.shape)
+    # Reconstruct the grid
+    z_grid = []
+    for y in y_unique:
+        row_vals = []
+        for x in x_unique:
+            row_vals.append(z_lookup[(x, y)])
+        z_grid.append(row_vals)
 
-    # Draw the decision boundary background
     plt.figure(figsize=(9, 7))
-    plt.contourf(xx, yy, z, alpha=0.25, levels=[-0.5, 0.5, 1.5, 2.5])
+    plt.contourf(x_unique, y_unique, z_grid, levels=[-0.5, 0.5, 1.5, 2.5], alpha=0.25)
+
 
     used_labels = set()
 
@@ -115,4 +116,11 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
     )
     plt.legend()
     plt.grid(True)
+
+    x_values = [point["x"] for point in points_list]
+    y_values = [point["y"] for point in points_list]
+
+    plt.xlim(min(x_values) - 0.5, max(x_values) + 0.5)
+    plt.ylim(min(y_values) - 0.5, max(y_values) + 0.5)
+
     plt.show()
