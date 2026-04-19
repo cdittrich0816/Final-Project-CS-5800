@@ -25,8 +25,8 @@ def prepare_iris_csv():
     test_df = shuffled_df.iloc[120:]
 
     # 6. Save to CSV files
-    train_df.to_csv('./train_dataset.csv', index=False)
-    test_df.to_csv('./test_dataset.csv', index=False)
+    train_df.to_csv('data/train_dataset.csv', index=False)
+    test_df.to_csv('data/test_dataset.csv', index=False)
 
 if __name__ == "__main__":
     prepare_iris_csv()
