@@ -39,9 +39,15 @@ def main():
     k = 6  # k
 
     # 3. Generate decision boundary
-    step = 0.1
-    x_range = np.arange(0, 10.1, step)
-    y_range = np.arange(0, 10.1, step)
+    x_values = [point["x"] for point in points_list]
+    y_values = [point["y"] for point in points_list]
+
+    x_min, x_max = min(x_values) - 0.5, max(x_values) + 0.5
+    y_min, y_max = min(y_values) - 0.5, max(y_values) + 0.5
+
+    step = 0.05
+    x_range = np.arange(x_min, x_max, step)
+    y_range = np.arange(y_min, y_max, step)
 
     with open("./data/decision_boundary.csv", mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
