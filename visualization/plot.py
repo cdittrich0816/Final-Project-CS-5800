@@ -33,7 +33,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
     x_values = [point["x"] for point in points_list]
     y_values = [point["y"] for point in points_list]
 
-    # Add padding around the plotted area
+    # Add a small margin around the plotted area
     x_min, x_max = min(x_values) - 0.5, max(x_values) + 0.5
     y_min, y_max = min(y_values) - 0.5, max(y_values) + 0.5
 
@@ -59,7 +59,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
 
     used_labels = set()
 
-    # Plot all dataset points
+    # Plot all the points in the dataset
     for point in points_list:
         x = point["x"]
         y = point["y"]
