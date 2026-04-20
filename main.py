@@ -99,7 +99,7 @@ def main():
     top_k_neighbors = cal_topk_neighbors(points_list, target_xy, k)
     predicted_label = vote_for_label(top_k_neighbors)
 
-    plot_knn(points_list, target_xy, top_k_neighbors, predicted_label, k)
+    plot_knn(points_list, target_xy, top_k_neighbors, predicted_label)
 
 if __name__ == "__main__":
     main()
