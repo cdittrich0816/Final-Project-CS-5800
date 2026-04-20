@@ -2,7 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 
 
-def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
+def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     """
     Visualize the KNN classification result with decision boundaries.
 
@@ -10,7 +10,6 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label, k):
     target_point: the point we want to classify
     top_k_neighbors: the k nearest neighbors for the target point
     predicted_label: the predicted class label for the target point
-    k: the number of neighbors used in KNN
     """
 
     # Color mapping for Iris labels
