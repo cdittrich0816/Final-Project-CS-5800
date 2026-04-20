@@ -18,7 +18,7 @@ def parse_data(filename):
         # Get a csv object from file
         csv_reader = csv.reader(file)
         # Move to real data.
-        next(csv_reader)
+        # next(csv_reader)
         i= 0
         for row in csv_reader:
             i+= 1
