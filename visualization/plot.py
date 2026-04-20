@@ -12,14 +12,14 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     predicted_label: the predicted class label for the target point
     """
 
-    # Color mapping for Iris labels
+    # Map the Iris labels to colors
     label_colors = {
         "Iris-setosa": "blue",
         "Iris-versicolor": "green",
         "Iris-virginica": "orange"
     }
 
-    # Numeric mapping for contour plotting
+    # Map the class labels to numeric values for plotting
     label_to_num = {
         "Iris-setosa": 0,
         "Iris-versicolor": 1,
