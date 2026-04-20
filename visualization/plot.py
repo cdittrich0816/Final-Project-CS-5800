@@ -26,7 +26,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         "Iris-virginica": 2
     }
 
-    # Read the precalculated decision boundary data from the CSV file
+    # Read the decision boundary data from the CSV file
     boundary_rows = []
 
     with open("./data/decision_boundary.csv", mode="r", encoding="utf-8") as file:
