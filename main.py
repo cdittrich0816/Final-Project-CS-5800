@@ -6,6 +6,11 @@ from visualization.plot import plot_knn
 from knn.knn import cal_topk_neighbors, vote_for_label
 import numpy as np
 
+"""
+If you want to test prepare_iris_csv(), please:
+In VScode, keep the 26th line as it is.
+In Pycharm, uncomment the 26th line(Since different IDEs are not compatible, there's may be a bug when parsing the dataset.).
+"""
 def parse_data(filename):
     points_list = []
     # if data file doesn't exist.
@@ -32,7 +37,7 @@ def parse_data(filename):
 
 def main():
     # 0. prepare Iris data from UCI repository.
-    prepare_iris_csv()
+    # prepare_iris_csv()
 
     # 1. parse the training data file.
     filename = "data/train_dataset.csv"
