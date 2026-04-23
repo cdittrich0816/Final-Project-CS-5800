@@ -1,32 +1,37 @@
 from ucimlrepo import fetch_ucirepo
 
 """
-prepare_iris_csv prepares training data and test data from UCI repository.
+prepare_iris_csv prepares training data and testing data from UCI repository.
 """
 def prepare_iris_csv():
-    # 1. Fetch the dataset from UCI Repository
+    # 1. Fetch dataset
     iris = fetch_ucirepo(id=53)
     df = iris.data.original
 
-    # 2. Select the first two features and iris label.
-    # iloc[:, [0, 1, -1]]: select Sepal Length, Sepal Width, and iris label
-    selected_df = df.iloc[:, [0, 1, -1]].copy()
+    # 2. build new combined features
+    result_df = df.copy()
 
-    # 3. rename the columns to make it aligned with our knn logic.
-    selected_df.columns = ['x', 'y', 'label']
+    # x = sepal length + sepal width
+    result_df['x'] = df.iloc[:, 0] + df.iloc[:, 1]
+    # y = petal length + petal width
+    result_df['y'] = df.iloc[:, 2] + df.iloc[:, 3]
+    # get label
+    result_df['label'] = df.iloc[:, 4]
 
-    # 4. Shuffle the dataset to get a random sequence.
-    # frac=1: shuffle all of the data.
-    # random_state=42: make the random seed a fixed one to ensure every time we run it, we would get the same result.
+    # we only need 3 columns- x, y, label
+    selected_df = result_df[['x', 'y', 'label']].copy()
+
+    # 3. shuffle
     shuffled_df = selected_df.sample(frac=1, random_state=42).reset_index(drop=True)
 
-    # 5. 80% for training, 20% for testing
+    # 4. split
     train_df = shuffled_df.iloc[:120]
     test_df = shuffled_df.iloc[120:]
 
-    # 6. Save to CSV files
+    # 5. save
     train_df.to_csv('data/train_dataset.csv', index=False)
     test_df.to_csv('data/test_dataset.csv', index=False)
+
 
 if __name__ == "__main__":
     prepare_iris_csv()
