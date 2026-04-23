@@ -1,15 +1,15 @@
 import csv
 import os
+import random
 
 from data.prepare_data import prepare_iris_csv
 from visualization.plot import plot_knn
 from knn.knn import cal_topk_neighbors, vote_for_label
 import numpy as np
 
+
 """
-If you want to test prepare_iris_csv(), please:
-In VScode, keep the 26th line as it is.
-In Pycharm, uncomment the 26th line(Since different IDEs are not compatible, there's may be a bug when parsing the dataset.).
+parse the dataset- x, y, label, return a list.
 """
 def parse_data(filename):
     points_list = []
@@ -19,14 +19,13 @@ def parse_data(filename):
         return points_list
 
     with open(filename, mode='r', encoding='utf-8') as file:
-        # Since the dataset has a header 'x', 'y', 'label' as the first row, we need to skip the 1st row.
         # Get a csv object from file
         csv_reader = csv.reader(file)
-        # Move to real data.
-        # next(csv_reader)
         i= 0
         for row in csv_reader:
-            i+= 1
+            if row[0] == "x":
+                continue
+            i += 1
             points_list.append({
                 'x': float(row[0]),  # to make the distance calculation more precise, transform it to float.
                 'y': float(row[1]),
@@ -35,21 +34,109 @@ def parse_data(filename):
         print("rows parsed := ", i)
     return points_list
 
+"""
+training using train_points and testing with val_points.
+"""
+def compute_accuracy(train_points, val_points, k):
+    right_predictions = 0
+
+    # train and test
+    for target_point in val_points:
+        target_xy = (target_point['x'], target_point['y'])
+        target_label = target_point['label']
+
+        top_k_neighbors = cal_topk_neighbors(train_points, target_xy, k)
+        predicted_label = vote_for_label(top_k_neighbors)
+
+        if predicted_label == target_label:
+            right_predictions += 1
+
+    # calculate the accuracy.
+    return right_predictions / len(val_points)
+
+"""
+Implement a k-fold cross-validation in training dataset and return the optimal k.
+"""
+def k_fold_cross_validation(points_list, k_ranges, num_folds=5):
+    # 0. shuffle all points.
+    shuffled_points = points_list[:]
+    random.seed(42)
+    random.shuffle(shuffled_points)
+
+    # 1. get the size of each fold, should be 24.
+    fold_size = len(shuffled_points) // num_folds
+    folds = []
+
+    # 2. decide where each fold start at and end at.
+    for i in range(num_folds):
+        start = i * fold_size
+        if i == num_folds - 1:
+            end = len(shuffled_points)
+        else:
+            end = (i + 1) * fold_size
+        folds.append(shuffled_points[start:end])
+
+    # 3. initialization.
+    best_k = None
+    best_avg_accuracy = -1
+    k_to_avg_accuracy = {}
+
+    # 4. test for the values of k.
+    for k in k_ranges:
+        fold_accuracies = []
+
+        for i in range(num_folds):
+            # use the ith fold as validation set.
+            val_points = folds[i]
+            train_points = []
+
+            # use any other folds as training sets.
+            for j in range(num_folds):
+                if j != i:
+                    train_points.extend(folds[j])
+
+            # train and test, then return the accuracy.
+            accuracy = compute_accuracy(train_points, val_points, k)
+
+            # accuracy using the ith fold as validation set.
+            fold_accuracies.append(accuracy)
+
+        # what's the avg accuracy of k for 5 folds?
+        avg_accuracy = sum(fold_accuracies) / len(fold_accuracies)
+        k_to_avg_accuracy[k] = avg_accuracy
+
+        print(f"k = {k}, fold accuracies = {[round(a, 4) for a in fold_accuracies]}, avg = {avg_accuracy:.4f}")
+
+        # update the best k.
+        if avg_accuracy > best_avg_accuracy:
+            best_avg_accuracy = avg_accuracy
+            best_k = k
+
+    return best_k, best_avg_accuracy, k_to_avg_accuracy
+
+
 def main():
     # 0. prepare Iris data from UCI repository.
-    # prepare_iris_csv()
+    prepare_iris_csv()
 
     # 1. parse the training data file.
-    filename = "data/train_dataset.csv"
-    points_list = parse_data(filename)
+    train_filename = "data/train_dataset.csv"
+    points_list = parse_data(train_filename)
 
     # 2. parse the testing data file.
-    filename = "data/test_dataset.csv"
-    target_points_list = parse_data(filename)
-    right_predictions = 0
-    k = 6  # k
+    test_filename = "data/test_dataset.csv"
+    target_points_list = parse_data(test_filename)
 
-    # 3. Generate decision boundary
+    # 3. use k-fold cross-validation to select best k
+    k_ranges = list(range(1, 16))
+    best_k, best_avg_accuracy, k_to_avg_accuracy = k_fold_cross_validation(points_list, k_ranges, num_folds=5)
+
+    print(f"Best k = {best_k}")
+    print(f"Best average validation accuracy = {best_avg_accuracy * 100:.2f}%")
+
+    k = best_k
+
+    # 4. Generate decision boundary
     x_values = [point["x"] for point in points_list]
     y_values = [point["y"] for point in points_list]
 
@@ -73,38 +160,41 @@ def main():
 
                 writer.writerow([target_xy[0], target_xy[1], predicted_label])
 
-    for idx, target_point in enumerate(target_points_list):
-        # 3. extract x and y for target_point
-        target_xy = (target_point['x'], target_point['y'])
-        target_label = (target_point['label'])
+    # 5. Evaluate on test dataset
+    right_predictions = 0
 
-        # 4. get top k nearest neighbors for target_node.
+    for idx, target_point in enumerate(target_points_list):
+        target_xy = (target_point['x'], target_point['y'])
+        target_label = target_point['label']
+
         top_k_neighbors = cal_topk_neighbors(points_list, target_xy, k)
 
-        # 5. print tok k neighbors.
         print("\nTop K Neighbors: ")
         for i, item in enumerate(top_k_neighbors):
             point = item['point']
             dist = item['distance']
-            print(f"Top {i + 1}: point({point['x']}, {point['y']}) | label: {point['label']} | distance: {dist:.4f}")
+            print(
+                f"Top {i + 1}: point({point['x']}, {point['y']}) | "
+                f"label: {point['label']} | distance: {dist:.4f}"
+            )
 
-        # 6. Vote for label.
         predicted_label = vote_for_label(top_k_neighbors)
 
         if predicted_label == target_label:
             right_predictions += 1
 
-        # 7. Print the predicted label.
         print(f"Predicted_Label: {predicted_label}, Original_Label: {target_label}")
 
-    print(f"\nprediction correct rate: {float(right_predictions / 30) * 100:.2f}%")
+    print(f"\nTest correct rate: {float(right_predictions / len(target_points_list)) * 100:.2f}%")
 
-    target_xy = (5.4, 1.9)
+    # 6. visualize one target point
+    target_xy = (7.4, 6.2)
 
     top_k_neighbors = cal_topk_neighbors(points_list, target_xy, k)
     predicted_label = vote_for_label(top_k_neighbors)
 
     plot_knn(points_list, target_xy, top_k_neighbors, predicted_label)
+
 
 if __name__ == "__main__":
     main()
