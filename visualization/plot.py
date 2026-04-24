@@ -66,7 +66,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
             row_vals.append(lookup[(x, y)])
         grid.append(row_vals)
 
-
+    # This plots the actual decision boundary regions
     plt.figure(figsize=(9, 7))
     plt.contourf(unique_x_vals, unique_y_vals, grid, levels=[-0.5, 0.5, 1.5, 2.5], alpha=0.25)
 
@@ -115,6 +115,7 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         label="Target Point"
     )
 
+    # This plots the axes labels, as well as the graph title
     plt.xlabel("Sepal Length + Sepal Width")
     plt.ylabel("Petal Length + Petal Width")
     plt.title(
@@ -125,9 +126,10 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
     plt.grid(True)
 
 
+    # This adds axes limits based on the points_list and adds a small margin. This helps
+    # to better visualize the data.
     x_values = [point["x"] for point in points_list]
     y_values = [point["y"] for point in points_list]
-
     plt.xlim(min(x_values) - 0.5, max(x_values) + 0.5)
     plt.ylim(min(y_values) - 0.5, max(y_values) + 0.5)
 
