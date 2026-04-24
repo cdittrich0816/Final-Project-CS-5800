@@ -115,8 +115,8 @@ def plot_knn(points_list, target_point, top_k_neighbors, predicted_label):
         label="Target Point"
     )
 
-    plt.xlabel("Sepal Length")
-    plt.ylabel("Sepal Width")
+    plt.xlabel("Sepal Length + Sepal Width")
+    plt.ylabel("Petal Length + Petal Width")
     plt.title(
         f"KNN Classification Result with Decision Boundaries "
         f"(Predicted Label: {predicted_label.replace('Iris-', '')})"
